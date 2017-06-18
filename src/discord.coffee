@@ -63,6 +63,18 @@ class DiscordBot extends Adapter
         user.name                 = message.author.username
         user.discriminator        = message.author.discriminator
         user.id                   = message.author.id
+        user.rawmessage           = message
+
+        if message.guild?
+          user.guild = message.guild
+
+        # add guild specific information if the user is a member of a guild
+        if message.member?
+          user.guildmember = message.member
+          user.roles = message.member.roles
+
+
+
 
         @rooms[message.channel.id]?= message.channel
 
@@ -117,7 +129,7 @@ class DiscordBot extends Adapter
           else
             robot.logger.debug "Can't send message to #{channel.name}, permission denied"
             if(process.env.HUBOT_OWNER)
-              owner = robot.client.users.get(process.env.HUBOT_OWNER)  
+              owner = robot.client.users.get(process.env.HUBOT_OWNER)
               owner.sendMessage("Couldn't send message to #{channel.name} (#{channel}) in #{channel.guild.name}, contact #{channel.guild.owner} to check permissions")
                 .then (msg) ->
                   robot.logger.debug "SUCCESS! Message sent to: #{owner.id}"
