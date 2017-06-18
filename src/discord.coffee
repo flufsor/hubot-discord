@@ -73,9 +73,6 @@ class DiscordBot extends Adapter
           user.guildmember = message.member
           user.roles = message.member.roles
 
-
-
-
         @rooms[message.channel.id]?= message.channel
 
         text = message.cleanContent
