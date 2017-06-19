@@ -65,13 +65,10 @@ class DiscordBot extends Adapter
         user.id                   = message.author.id
         user.rawmessage           = message
 
-        if message.guild?
-          user.guild = message.guild
-
-        # add guild specific information if the user is a member of a guild
-        if message.member?
-          user.guildmember = message.member
-          user.roles = message.member.roles
+        # add guild information to the user
+        user.guild = message.guild
+        user.guildmember = message.member
+        user.roles = message.member?.roles
 
         @rooms[message.channel.id]?= message.channel
 
