@@ -175,6 +175,56 @@ class DiscordBot extends Adapter
         @robot.logger.info "#{user.name}#{user.discriminator} leaving #{roomId} after a guild delete"
         @receive new LeaveMessage(user, null, null)
 
+     sendEmbed: (channelId, embed) ->
+        sendChannelEmbed = (channel, embed) ->
+          clientUser = robot?.client?.user
+          isText = channel != null && channel.type == 'text'
+          permissions = isText && channel.permissionsFor(clientUser)
+
+          hasPerm = if isText then (permissions != null && permissions.hasPermission("SEND_MESSAGES")) else channel.type != 'text'
+          if(hasPerm)
+            channel.sendEmbed(embed, {split: true})
+              .then (msg) ->
+                robot.logger.debug "SUCCESS! Embed sent to: #{channel.id}"
+              .catch (err) ->
+                robot.logger.debug "Error sending: #{embed}\r\n#{err}"
+                if(process.env.HUBOT_OWNER)
+                  owner = robot.client.users.get(process.env.HUBOT_OWNER)
+                  owner.sendMessage("Couldn't send embed to #{channel.name} (#{channel}) in #{channel.guild.name}, contact #{channel.guild.owner}.\r\n#{error}")
+                    .then (msg) ->
+                      robot.logger.debug "SUCCESS! Embed sent to: #{owner.id}"
+                    .catch (err) ->
+                        robot.logger.debug "Error sending: #{embed}\r\n#{err}"
+          else
+            robot.logger.debug "Can't send embed to #{channel.name}, permission denied"
+            if(process.env.HUBOT_OWNER)
+              owner = robot.client.users.get(process.env.HUBOT_OWNER)
+              owner.sendMessage("Couldn't send embed to #{channel.name} (#{channel}) in #{channel.guild.name}, contact #{channel.guild.owner} to check permissions")
+                .then (msg) ->
+                  robot.logger.debug "SUCCESS! Embed sent to: #{owner.id}"
+                .catch (err) ->
+                    robot.logger.debug "Error sending: #{embed}\r\n#{err}"
+
+
+        sendUserEmbed = (user, embed) ->
+          user.sendEmbed(embed, {split: true})
+            .then (msg) ->
+              robot.logger.debug "SUCCESS! Embed sent to: #{user.id}"
+            .catch (err) ->
+              robot.logger.debug "Error sending: #{embed}\r\n#{err}"
+
+
+        if @rooms[channelId]? # room is already known and cached
+          sendChannelEmbed @rooms[channelId], embed
+        else # unknown room, try to find it
+          channels = @client.channels.filter (channel) -> channel.id == channelId
+
+          if channels.first()?
+            sendChannelEmbed channels.first(), embed
+          else if @client.users.get(channelId)?
+            sendUserEmbed @client.users.get(channelId), embed
+          else
+            @robot.logger.debug "Unknown channel id: #{channelId}"
 
 exports.use = (robot) ->
     new DiscordBot robot
