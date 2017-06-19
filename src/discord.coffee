@@ -176,6 +176,7 @@ class DiscordBot extends Adapter
         @receive new LeaveMessage(user, null, null)
 
      sendEmbed: (channelId, embed) ->
+        robot = @robot
         sendChannelEmbed = (channel, embed) ->
           clientUser = robot?.client?.user
           isText = channel != null && channel.type == 'text'
