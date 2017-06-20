@@ -15,8 +15,7 @@
     "opusscript": "0.0.3",
     "parent-require": "^1.0.0",
     "request": "^2.81.0",
-    "sodium": "^2.0.1",
-    "uws": "^8.14.0"
+    "sodium": "^2.0.1"
   },
   "peerDependencies": {
     "hubot": ">=2.0"
