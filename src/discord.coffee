@@ -184,7 +184,7 @@ class DiscordBot extends Adapter
 
           hasPerm = if isText then (permissions != null && permissions.hasPermission("SEND_MESSAGES")) else channel.type != 'text'
           if(hasPerm)
-            channel.sendEmbed(embed, {split: true})
+            channel.send({embed: embed})
               .then (msg) ->
                 robot.logger.debug "SUCCESS! Embed sent to: #{channel.id}"
               .catch (err) ->
@@ -208,7 +208,7 @@ class DiscordBot extends Adapter
 
 
         sendUserEmbed = (user, embed) ->
-          user.sendEmbed(embed, {split: true})
+          user.send({embed: embed})
             .then (msg) ->
               robot.logger.debug "SUCCESS! Embed sent to: #{user.id}"
             .catch (err) ->
