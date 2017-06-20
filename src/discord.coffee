@@ -108,14 +108,14 @@ class DiscordBot extends Adapter
 
           hasPerm = if isText then (permissions != null && permissions.hasPermission("SEND_MESSAGES")) else channel.type != 'text'
           if(hasPerm)
-            channel.sendMessage(message, {split: true})
+            channel.send(message, {split: true})
               .then (msg) ->
                 robot.logger.debug "SUCCESS! Message sent to: #{channel.id}"
               .catch (err) ->
                 robot.logger.debug "Error sending: #{message}\r\n#{err}"
                 if(process.env.HUBOT_OWNER)
                   owner = robot.client.users.get(process.env.HUBOT_OWNER)
-                  owner.sendMessage("Couldn't send message to #{channel.name} (#{channel}) in #{channel.guild.name}, contact #{channel.guild.owner}.\r\n#{error}")
+                  owner.send("Couldn't send message to #{channel.name} (#{channel}) in #{channel.guild.name}, contact #{channel.guild.owner}.\r\n#{error}")
                     .then (msg) ->
                       robot.logger.debug "SUCCESS! Message sent to: #{owner.id}"
                     .catch (err) ->
@@ -124,7 +124,7 @@ class DiscordBot extends Adapter
             robot.logger.debug "Can't send message to #{channel.name}, permission denied"
             if(process.env.HUBOT_OWNER)
               owner = robot.client.users.get(process.env.HUBOT_OWNER)
-              owner.sendMessage("Couldn't send message to #{channel.name} (#{channel}) in #{channel.guild.name}, contact #{channel.guild.owner} to check permissions")
+              owner.send("Couldn't send message to #{channel.name} (#{channel}) in #{channel.guild.name}, contact #{channel.guild.owner} to check permissions")
                 .then (msg) ->
                   robot.logger.debug "SUCCESS! Message sent to: #{owner.id}"
                 .catch (err) ->
@@ -132,7 +132,7 @@ class DiscordBot extends Adapter
 
 
         sendUserMessage = (user, message) ->
-          user.sendMessage(message, {split: true})
+          user.send(message, {split: true})
             .then (msg) ->
               robot.logger.debug "SUCCESS! Message sent to: #{user.id}"
             .catch (err) ->
