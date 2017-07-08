@@ -10,7 +10,6 @@
     "bufferutil": "^3.0.1",
     "discord.js": "^11.1.0",
     "erlpack": "github:hammerandchisel/erlpack",
-    "node-opus": "^0.2.6",
     "opusscript": "0.0.3",
     "parent-require": "^1.0.0",
     "request": "^2.81.0"
