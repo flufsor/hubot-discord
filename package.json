@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "bufferutil": "^3.0.1",
+    "bufferutil": "^3.0.2",
     "discord.js": "^11.1.0",
     "opusscript": "0.0.3",
     "parent-require": "^1.0.0",
