@@ -106,7 +106,7 @@ class DiscordBot extends Adapter
           isText = channel != null && channel.type == 'text'
           permissions = isText && channel.permissionsFor(clientUser)
 
-          hasPerm = if isText then (permissions != null && permissions.hasPermission("SEND_MESSAGES")) else channel.type != 'text'
+          hasPerm = if isText then (permissions != null && permissions.has("SEND_MESSAGES")) else channel.type != 'text'
           if(hasPerm)
             channel.send(message, {split: true})
               .then (msg) ->
@@ -182,7 +182,7 @@ class DiscordBot extends Adapter
           isText = channel != null && channel.type == 'text'
           permissions = isText && channel.permissionsFor(clientUser)
 
-          hasPerm = if isText then (permissions != null && permissions.hasPermission("SEND_MESSAGES")) else channel.type != 'text'
+          hasPerm = if isText then (permissions != null && permissions.has("SEND_MESSAGES")) else channel.type != 'text'
           if(hasPerm)
             channel.send({embed: embed})
               .then (msg) ->
